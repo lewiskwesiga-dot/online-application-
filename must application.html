@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUST Online Application Portal</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px 15px;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #edf2ff, #ffffff);
+            color: #202b3c;
+        }
+
+        .university {
+            text-align: center;
+            margin: 0 auto 25px;
+            max-width: 650px;
+        }
+
+        .logo {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            border-radius: 50%;
+            background: white;
+            padding: 4px;
+        }
+
+        h1 {
+            font-size: 26px;
+            color: #172b70;
+            line-height: 1.4;
+        }
+
+        .portal {
+            display: inline-block;
+            background: #e4ecff;
+            color: #263f9e;
+            border-radius: 25px;
+            padding: 11px 20px;
+            font-weight: bold;
+        }
+
+        .card {
+            max-width: 590px;
+            margin: auto;
+            padding: 30px;
+            background: white;
+            border: 1px solid #e3e8f0;
+            border-radius: 18px;
+            box-shadow: 0 10px 35px #152d6015;
+        }
+
+        h2 {
+            margin: 0 0 10px;
+            font-size: 24px;
+        }
+
+        .subtitle {
+            color: #78869a;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 9px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #dce2ec;
+            border-radius: 9px;
+            font-size: 15px;
+            background: white;
+        }
+
+        input:focus, select:focus {
+            outline: 2px solid #d4defe;
+            border-color: #263f9e;
+        }
+
+        button, .button {
+            display: inline-block;
+            padding: 13px 16px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .primary {
+            background: #263f9e;
+            color: white;
+            border: none;
+        }
+
+        .secondary {
+            background: white;
+            color: #263f9e;
+            border: 1px solid #cbd5e5;
+        }
+
+        .full {
+            display: block;
+            width: 100%;
+        }
+
+        .forgot {
+            display: block;
+            color: #52647d;
+            margin: 20px 0;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .new-user {
+            border-top: 1px solid #edf0f5;
+            margin-top: 25px;
+            padding-top: 20px;
+            text-align: center;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .actions > * {
+            flex: 1;
+        }
+
+        .footer {
+            text-align: center;
+            color: #8792a3;
+            margin-top: 25px;
+            font-size: 12px;
+        }
+
+        /* Hide popups until their links are clicked */
+        .popup {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 10;
+            background: #101b36a8;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        /* CSS opens the popup without JavaScript */
+        .popup:target {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .popup-box {
+            width: 100%;
+            max-width: 650px;
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            margin: auto;
+            box-shadow: 0 15px 50px #0003;
+        }
+
+        .popup-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .close {
+            text-decoration: none;
+            color: #263244;
+            background: #f0f3f8;
+            border-radius: 50%;
+            padding: 7px 12px;
+            font-size: 20px;
+        }
+
+        .phone-row {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 10px;
+        }
+
+        .email-help {
+            display: block;
+            text-align: right;
+            margin: -5px 0 25px;
+            color: #263f9e;
+            text-decoration: none;
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        .popup-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .popup-actions a,
+        .popup-actions button {
+            min-width: 100px;
+        }
+
+        .instructions {
+            background: #f3f6ff;
+            border-left: 4px solid #263f9e;
+            padding: 17px;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        .notice {
+            background: #fff6dc;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* Page navigation using CSS only */
+        #applicationPage { display: none; }
+        #applicationPage:target { display: block; }
+        body:has(#applicationPage:target) #loginPage { display: none; }
+
+        .application-card {
+            max-width: 900px;
+            margin: 0 auto 25px;
+            padding: 30px;
+            background: white;
+            border: 1px solid #e3e8f0;
+            border-radius: 18px;
+            box-shadow: 0 10px 35px #152d6015;
+        }
+
+        .dashboard-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            margin: 28px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e3e8f0;
+            color: #263f9e;
+            font-size: 18px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0 18px;
+        }
+
+        .form-grid .field { min-width: 0; }
+        .full-width { grid-column: 1 / -1; }
+        .dashboard-note {
+            padding: 14px;
+            margin: 15px 0 20px;
+            background: #f3f6ff;
+            border-left: 4px solid #263f9e;
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 22px 17px;
+            }
+
+            h1 {
+                font-size: 21px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .phone-row {
+                grid-template-columns: 1fr;
+            }
+
+            .popup-box {
+                padding: 20px 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="university">
+        <img src="must-logo.png" alt="MUST Logo" class="logo">
+
+        <h1>
+            MBARARA UNIVERSITY OF SCIENCE AND TECHNOLOGY
+        </h1>
+
+        <span class="portal">Online Application Portal</span>
+    </header>
+
+    <!-- LOGIN PAGE -->
+
+    <main class="card" id="loginPage">
+        <h2>Welcome Back</h2>
+
+        <p class="subtitle">
+            Log in to access your application dashboard
+        </p>
+
+        <form action="#applicationPage" method="get">
+
+            <div class="field">
+                <label for="loginEmail">Email Address</label>
+                <input type="email" id="loginEmail"
+                       placeholder="Enter your email address" required>
+            </div>
+
+            <div class="field">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword"
+                       placeholder="Enter your password" required>
+            </div>
+
+            <a href="#applicationPage" class="button primary full">
+                ➜ Sign In
+            </a>
+
+        </form>
+
+        <a href="#forgot" class="forgot">
+            🔑 Forgot your password?
+        </a>
+
+        <div class="new-user">
+            <p>New to the portal?</p>
+
+            <div class="actions">
+                <a href="#register" class="button secondary">
+                    👤 Create Account
+                </a>
+
+                <a href="#apply" class="button secondary">
+                    ? How to Apply
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- APPLICATION PAGE: shown after the user signs in -->
+    <main class="application-card page" id="applicationPage">
+        <div class="dashboard-top">
+            <div>
+                <h2>Application Dashboard</h2>
+                <p class="subtitle" style="margin-bottom:0;">Welcome to the MUST Online Application Portal. Complete the form below.</p>
+            </div>
+            <a href="#loginPage" class="button secondary">Log Out</a>
+        </div>
+
+        
+
+        <form id="applicationForm">
+            <h3 class="section-title">1. Personal Information</h3>
+            <div class="form-grid">
+                <div class="field">
+                    <label for="appSurname">Surname</label>
+                    <input type="text" id="appSurname" required placeholder="Enter surname">
+                </div>
+                <div class="field">
+                    <label for="appOtherNames">Other Names</label>
+                    <input type="text" id="appOtherNames" required placeholder="Enter other names">
+                </div>
+                <div class="field">
+                    <label for="appDob">Date of Birth</label>
+                    <input type="date" id="appDob" required>
+                </div>
+                <div class="field">
+                    <label for="appGender">Gender</label>
+                    <select id="appGender" required>
+                        <option value="">Select gender</option>
+                        <option>Male</option><option>Female</option><option>Prefer not to say</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="appNationality">Nationality</label>
+                    <input type="text" id="appNationality" required placeholder="e.g. Ugandan">
+                </div>
+                <div class="field">
+                    <label for="appPhone">Phone Number</label>
+                    <input type="tel" id="appPhone" required placeholder="e.g. 0770000000">
+                </div>
+                <div class="field full-width">
+                    <label for="appAddress">Residential Address</label>
+                    <input type="text" id="appAddress" required placeholder="District, town or village">
+                </div>
+            </div>
+
+            <h3 class="section-title">2. Programme Information</h3>
+            <div class="form-grid">
+                <div class="field">
+                    <label for="appLevel">Application Level</label>
+                    <select id="appLevel" required>
+                        <option value="">Choose level</option>
+                        <option>Undergraduate</option><option>Diploma</option><option>Postgraduate</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="appIntake">Intake</label>
+                    <select id="appIntake" required>
+                        <option value="">Choose intake</option>
+                        <option>August Intake</option><option>January Intake</option><option>May Intake</option>
+                    </select>
+                </div>
+                <div class="field full-width">
+                    <label for="appProgramme">Programme / Course</label>
+                    <input type="text" id="appProgramme" required placeholder="Enter the programme you wish to study">
+                </div>
+            </div>
+
+            <h3 class="section-title">3. Education Background</h3>
+            <div class="form-grid">
+                <div class="field">
+                    <label for="appSchool">Last School / Institution Attended</label>
+                    <input type="text" id="appSchool" required placeholder="Name of institution">
+                </div>
+                <div class="field">
+                    <label for="appQualification">Highest Qualification</label>
+                    <select id="appQualification" required>
+                        <option value="">Choose qualification</option>
+                        <option>UCE</option><option>UACE</option><option>Diploma</option><option>Bachelor's Degree</option><option>Other</option>
+                    </select>
+                </div>
+                <div class="field full-width">
+                    <label for="appDocuments">Supporting Documents (PDF, JPG or PNG)</label>
+                    <input type="file" id="appDocuments" accept=".pdf,.jpg,.jpeg,.png" multiple>
+                </div>
+            </div>
+
+            <div class="notice" style="margin: 20px 0;">
+                Check the university's official requirements for the correct programme names, documents, and application deadlines before submitting.
+            </div>
+            <button type="button" class="primary" disabled>Review Application (demo only)</button>
+            <button type="reset" class="secondary">Clear Form</button>
+        </form>
+    </main>
+
+    <footer class="footer">
+        Mbarara University of Science and Technology<br>
+        Online Application Portal
+    </footer>
+
+
+    
+
+    <section class="popup" id="register">
+        <div class="popup-box">
+
+            <div class="popup-header">
+                <div>
+                    <h2>Create Account</h2>
+                    <p class="subtitle">
+                        Provide your details to receive a temporary password.
+                    </p>
+                </div>
+
+                <a href="#" class="close" aria-label="Close">×</a>
+            </div>
+
+            <form action="#" method="get">
+
+                <div class="field">
+                    <label for="surname">Surname</label>
+                    <input type="text" id="surname"
+                           placeholder="Surname" required>
+                </div>
+
+                <div class="field">
+                    <label for="otherNames">Other Names</label>
+                    <input type="text" id="otherNames"
+                           placeholder="Other names" required>
+                </div>
+
+                <div class="field">
+                    <label for="phone">Phone Number</label>
+
+                    <div class="phone-row">
+                        <select aria-label="Country code">
+                            <option value="+256">Uganda (+256)</option>
+                            <option value="+254">Kenya (+254)</option>
+                            <option value="+255">Tanzania (+255)</option>
+                            <option value="+250">Rwanda (+250)</option>
+                        </select>
+
+                        <input type="tel" id="phone"
+                               placeholder="0770000000" required>
+                    </div>
+
+                    <p class="subtitle">
+                        Use an active phone number to receive notifications.
+                    </p>
+                </div>
+
+                <div class="field">
+                    <label for="registerEmail">Email Address</label>
+                    <input type="email" id="registerEmail"
+                           placeholder="myemail@gmail.com" required>
+                </div>
+
+                <a href="https://accounts.google.com/"
+                   target="_blank" rel="noopener"
+                   class="email-help">
+                    Don't have an Email? Click to create ➜
+                </a>
+
+                <div class="popup-actions">
+                    <a href="#" class="button secondary">Close</a>
+
+                    <button type="submit" class="primary">
+                        👤 Create Account
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </section>
+
+
+    
+
+    <section class="popup" id="forgot">
+        <div class="popup-box">
+
+            <div class="popup-header">
+                <h2>Forgot your password?</h2>
+                <a href="#" class="close">×</a>
+            </div>
+
+            <p class="subtitle">
+                Enter your email address to request a password reset.
+            </p>
+
+            <form action="#" method="get">
+                <div class="field">
+                    <label for="forgotEmail">Email Address</label>
+                    <input type="email" id="forgotEmail"
+                           placeholder="Enter your email" required>
+                </div>
+
+                <div class="popup-actions">
+                    <a href="#" class="button secondary">Close</a>
+                    <button type="submit" class="primary">
+                        Reset Password
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </section>
+
+
+    
+
+    <section class="popup" id="apply">
+        <div class="popup-box">
+
+            <div class="popup-header">
+                <h2>How to Apply</h2>
+                <a href="#" class="close">×</a>
+            </div>
+
+            <p class="subtitle">
+                Follow these general steps to apply online.
+            </p>
+
+            <div class="instructions">
+                <strong>Step 1:</strong> Create an account.<br>
+                <strong>Step 2:</strong> Sign in to the portal.<br>
+                <strong>Step 3:</strong> Complete the application form.<br>
+                <strong>Step 4:</strong> Upload required documents.<br>
+                <strong>Step 5:</strong> Review and submit your application.<br>
+                <strong>Step 6:</strong> Check the portal for updates.
+            </div>
+
+            <p class="notice">
+                Confirm official application requirements and deadlines
+                with the university.
+            </p>
+
+            <a href="#" class="button primary full">Close</a>
+
+        </div>
+    </section>
+
+
+</body>
+</html>
